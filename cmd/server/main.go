@@ -1,6 +1,10 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"go-api/internal/handler"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
 	r := gin.Default()
@@ -10,6 +14,8 @@ func main() {
 			"message": "OK",
 		})
 	})
+
+	r.GET("/ping", handler.Ping)
 
 	r.Run(":8080")
 }
