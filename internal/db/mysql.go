@@ -3,6 +3,7 @@ package db
 import (
 	"log"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 )
 
