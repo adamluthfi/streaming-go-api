@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"go-api/internal/config"
 	"go-api/internal/model"
 	"time"
 
@@ -30,7 +31,7 @@ type RegisterRequest struct {
 	Password  string `json:"password" binding:"required"`
 }
 
-var jwtSecret = []byte("SUPER_SECRET_KEY")
+var jwtSecret = config.Load().JwtSecret
 
 func Login(db *sqlx.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
@@ -96,7 +97,6 @@ func Login(db *sqlx.DB) gin.HandlerFunc {
 		c.JSON(http.StatusOK, LoginResponse{
 			AccessToken:  accessString,
 			RefreshToken: refreshString,
-			Email:        user.Email,
 		})
 	}
 }

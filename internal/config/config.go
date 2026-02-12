@@ -10,6 +10,7 @@ import (
 type Config struct {
 	Port        string
 	DatabaseDSN string
+	JwtSecret   []byte
 }
 
 func Load() *Config {
@@ -18,10 +19,15 @@ func Load() *Config {
 	cfg := &Config{
 		Port:        getEnv("APP_PORT", "8080"),
 		DatabaseDSN: getEnv("DATABASE_DSN", ""),
+		JwtSecret:   []byte(getEnv("JWT_SECRET", "SUPER_SECRET_KEY")),
 	}
 
 	if cfg.DatabaseDSN == "" {
 		log.Fatal("DATABASE_DSN is required")
+	}
+
+	if len(cfg.JwtSecret) == 0 {
+		log.Fatal("JWT_SECRET is required")
 	}
 
 	return cfg
