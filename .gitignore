@@ -30,6 +30,7 @@
 # IDEs and Editors
 .idea/
 .vscode/
+.env
 *.swp
 *.swo
 *~

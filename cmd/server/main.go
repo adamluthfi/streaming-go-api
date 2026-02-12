@@ -1,28 +1,21 @@
 package main
 
 import (
-	"go-api/internal/db"
-	"go-api/internal/handler"
+	"log"
 
-	"github.com/gin-gonic/gin"
+	"go-api/internal/config"
+	"go-api/internal/db"
+	"go-api/internal/router"
 )
 
 func main() {
-	dsn := "app_user:123qweasd@tcp(localhost:3306)/stream_app_db?parseTime=true&charset=utf8mb4"
-	db := db.NewMySQL(dsn)
-	r := gin.Default()
+	cfg := config.Load()
 
-	r.GET("/health", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "OK",
-		})
-	})
+	database := db.NewMySQL(cfg.DatabaseDSN)
 
-	r.GET("/ping", handler.Ping)
+	r := router.Setup(database)
 
-	r.POST("/login", handler.Login(db))
-
-	r.POST("/register", handler.Register(db))
-
-	r.Run(":8080")
+	if err := r.Run(":" + cfg.Port); err != nil {
+		log.Fatal(err)
+	}
 }
